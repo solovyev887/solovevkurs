@@ -1,0 +1,205 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Наш сервис</title>  
+    <link rel="stylesheet" href="styles.css">  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">  
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">  
+</head>  
+<body>  
+    <div class="header-container">  
+        <a href="index.html" class="logo-button">  
+            <img src="logo.jpg" alt="Logo" class="logo">  
+        </a>  
+        <div class="site-title">  
+            <h1>Цели по накоплени</h1>  
+        </div>  
+        <nav>  
+            <a href="index.html">Главная</a>  
+            <a href="calculator.html">Калькулятор</a>  
+            <a href="goal.html">Цель для накопления</a>  
+            <a href="auth.html">Авторизация</a>  
+        </nav>  
+    </div>  
+    <title>Цели накопления</title>  
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">  
+    <style> 
+
+        body {  
+            font-family: 'Roboto', sans-serif;  
+            background-color: #f4f4f4;  
+            margin: 0;  
+            padding: 20px;  
+            min-height: 100vh; 
+        }  
+
+        .container {  
+            max-width: 600px; 
+            margin: auto;  
+            background: white;  
+            padding: 20px;  
+            border-radius: 10px;  
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
+        }  
+
+        h1 {  
+            text-align: center;  
+        }  
+
+        .form-group {  
+            margin-bottom: 20px;  
+        }  
+
+        .form-group label {  
+            display: block;  
+            margin-bottom: 5px;  
+        }  
+
+        .form-group input {  
+            width: 100%;  
+            padding: 10px;  
+            border: 1px solid #ccc;  
+            border-radius: 5px;  
+        }  
+
+        .goal {  
+            margin-top: 20px;  
+            padding: 10px;  
+            border: 1px solid #ccc;  
+            border-radius: 10px;  
+        }  
+
+        .goal-progress {  
+            background-color: #e0e0e0;  
+            border-radius: 5px;  
+            height: 30px;  
+            position: relative;  
+            margin-top: 10px;  
+        }  
+
+        .goal-progress-bar {  
+            background-color: #4CAF50;  
+            height: 100%;  
+            border-radius: 5px;  
+            width: 0%;  
+            transition: width 0.5s;  
+        }  
+
+        .goal-info {  
+            display: flex;  
+            justify-content: space-between;  
+            margin-top: 5px;  
+        }  
+
+        button {  
+            margin-top: 10px;  
+            padding: 5px 10px;  
+            border: none;  
+            border-radius: 5px;  
+            background-color: #4CAF50; /* Цвет кнопки */  
+            color: white; /* Цвет текста кнопки */  
+            cursor: pointer;  
+            transition: background-color 0.3s; /* Плавный переход */  
+        }  
+
+        button:hover {  
+            background-color: #45a049; /* Цвет кнопки при наведении */  
+        }  
+
+        .delete-button {  
+            background-color: #398f3c; /* Красный цвет для кнопки удаления */  
+        }  
+
+        .delete-button:hover {  
+            background-color: #1d4b1e; /* Цвет кнопки удаления при наведении */  
+        }  
+    </style>  
+</head>  
+<body>  
+
+<div class="container">  
+    <h1>Создание целей</h1>  
+    <div class="form-group">  
+        <label for="goalName">Название цели:</label>  
+        <input type="text" id="goalName" placeholder="Введите название цели" required>  
+    </div>  
+    <div class="form-group">  
+        <label for="goalAmount">Сумма цели:</label>  
+        <input type="number" id="goalAmount" placeholder="Введите сумму цели" required>  
+    </div>  
+    <div class="form-group">  
+        <label for="addAmount">Добавить деньги:</label>  
+        <input type="number" id="addAmount" placeholder="Сумма для добавления" required>  
+    </div>  
+    <button id="addGoalButton">Добавить цель</button>  
+
+    <div id="goalList"></div>  
+</div>  
+
+<script>  
+    // Загрузка целей из localStorage  
+    let goals = JSON.parse(localStorage.getItem('goals')) || [];  
+
+    function renderGoals() {  
+        const goalList = document.getElementById('goalList');  
+        goalList.innerHTML = ''; // Очистить список  
+
+        goals.forEach((goal, index) => {  
+            const goalDiv = document.createElement('div');  
+            goalDiv.classList.add('goal');  
+            goalDiv.innerHTML = `  
+                <h2>${goal.name}</h2>  
+                <div class="goal-progress">  
+                    <div class="goal-progress-bar" style="width: ${((goal.currentAmount / goal.amount) * 100).toFixed(2)}%;"></div>  
+                </div>  
+                <div class="goal-info">  
+                    <span>Текущая сумма: ${goal.currentAmount}</span>  
+                    <span>Цель: ${goal.amount}</span>  
+                </div>  
+                <button onclick="addAmount(${index})">Пополнить</button>  
+                <button onclick="deleteGoal(${index})" class="delete-button">Удалить</button>  
+            `;  
+            goalList.appendChild(goalDiv);  
+        });  
+    }  
+
+    function addAmount(goalIndex) {  
+        const addAmount = parseFloat(document.getElementById('addAmount').value);  
+        if (!isNaN(addAmount) && addAmount > 0) {  
+            goals[goalIndex].currentAmount += addAmount; // Увеличить текущую сумму  
+            localStorage.setItem('goals', JSON.stringify(goals)); // Обновить localStorage  
+            renderGoals(); // Перерисовать цели  
+        }  
+    }  
+
+    function deleteGoal(goalIndex) {  
+        goals.splice(goalIndex, 1); // Удалить цель из массива  
+        localStorage.setItem('goals', JSON.stringify(goals)); // Обновить localStorage  
+        renderGoals(); // Перерисовать цели  
+    }  
+
+    document.getElementById('addGoalButton').onclick = function () {  
+        const goalName = document.getElementById('goalName').value;  
+        const goalAmount = parseFloat(document.getElementById('goalAmount').value);  
+
+        if (goalName && !isNaN(goalAmount) && goalAmount > 0) {  
+            goals.push({ name: goalName, amount: goalAmount, currentAmount: 0 }); // Добавить новую цель  
+            localStorage.setItem('goals', JSON.stringify(goals)); // Обновить localStorage  
+            document.getElementById('goalName').value = ''; // Очистить ввод  
+            document.getElementById('goalAmount').value = '';  
+            renderGoals(); // Перерисовать список целей  
+        }  
+    };  
+
+    // Инициализация рендеринга  
+    renderGoals();   
+
+</script>  
+</body>  
+
+    <footer>  
+        <p>&copy; 2023 Наш сервис. Все права защищены.</p>  
+    </footer>   
+</html>  

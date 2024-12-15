@@ -1,0 +1,269 @@
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f1f1f1;
+}
+
+.header-container {
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.header-container .site-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+.header-container .logo-button {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  transition: transform 0.3s ease-in-out;
+  border-radius: 5px;
+}
+.header-container .logo-button:hover {
+  transform: scale(1.05);
+}
+.header-container .logo-button .logo {
+  height: 100px;
+  border-radius: 10px;
+}
+.header-container nav {
+  display: flex;
+  font-size: 24px;
+}
+.header-container nav a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-left: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+.header-container nav a:hover {
+  background-color: #3d8b40;
+  transform: scale(1.05);
+}
+
+nav {
+  display: flex;
+  margin-top: 10px;
+}
+nav a {
+  background-color: #398f3c;
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin: 0 5px;
+  transition: transform 0.3s ease-in-out;
+}
+nav a:hover {
+  transform: scale(1.05);
+}
+
+.content-container {
+  display: flex;
+  margin-top: 20px;
+}
+
+.sidebar {
+  width: 25%;
+  padding: 15px;
+  background-color: white;
+  border-radius: 10px;
+  margin-right: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.sidebar h2 {
+  margin-top: 0;
+}
+
+.info-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+main {
+  flex: 1;
+}
+
+.welcome-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 50px auto;
+  transition: transform 0.3s ease-in-out;
+  font-size: 24px;
+}
+.welcome-container .welcome-text {
+  flex: 1;
+  padding-right: 50px;
+}
+.welcome-container .welcome-text h2 {
+  margin-top: 0;
+}
+.welcome-container .welcome-text .welcome-buttons {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 20px;
+}
+.welcome-container .welcome-text .welcome-buttons .button {
+  margin-right: 10px;
+}
+.welcome-container .welcome-image {
+  flex: 1;
+  text-align: right;
+}
+.welcome-container .welcome-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+  margin: 0 5px;
+}
+.button i {
+  margin-left: 5px;
+}
+.button:hover {
+  background-color: #47a44b;
+  transform: scale(1.05);
+}
+
+section {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  transition: transform 0.3s ease-in-out;
+}
+
+input {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+footer {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #4CAF50;
+  color: white;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+.auth-container .auth-block {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  margin: 0 20px;
+  transition: transform 0.3s ease-in-out;
+}
+.auth-container .auth-block h2 {
+  text-align: center;
+  margin-top: 0;
+}
+.auth-container .auth-block form {
+  display: flex;
+  flex-direction: column;
+}
+.auth-container .auth-block input {
+  margin-bottom: 10px;
+}
+.auth-container .auth-block .button {
+  margin-top: 10px;
+}
+
+.button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+.button i {
+  margin-left: 5px;
+}
+.button:hover {
+  background-color: #3d8b40;
+  transform: scale(1.05);
+}
+
+.goal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  margin: 50px auto;
+  transition: transform 0.3s ease-in-out;
+}
+.goal-container h2 {
+  margin-top: 0;
+}
+.goal-container form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.goal-container form label {
+  margin-bottom: 5px;
+}
+.goal-container form input {
+  margin-bottom: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.goal-container form .button {
+  margin-top: 10px;
+}/*# sourceMappingURL=styles.css.map */

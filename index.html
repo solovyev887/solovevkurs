@@ -1,0 +1,66 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Наш сервис</title>  
+    <link rel="stylesheet" href="styles.css">  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">  
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">  
+</head>  
+<body>  
+    <div class="header-container">  
+        <a href="index.html" class="logo-button">  
+            <img src="logo.jpg" alt="Logo" class="logo">  
+        </a>  
+        <div class="site-title">  
+            <h1>Планировщик бюджета</h1>  
+        </div>  
+        <nav>  
+            <a href="index.html">Главная</a>  
+            <a href="calculator.html">Калькулятор</a>  
+            <a href="goal.html">Цель для накопления</a>  
+            <a href="auth.html">Авторизация</a>  
+        </nav>  
+    </div>  
+    <div class="welcome-container">  
+        <div class="welcome-text">  
+            <h2>Добро пожаловать на наш сервис!</h2>  
+            <p>Этот планировщик бюджета — ваш личный финансовый аналитик. Он не просто записывает ваши доходы и расходы, но и предоставляет подробную аналитику, которая поможет вам выявить слабые места и оптимизировать свои траты. Ставьте цели, создавайте категории расходов, получайте наглядные отчёты и стройте финансовые планы на будущее. С нашим планировщиком вы сможете не только следить за своим бюджетом, но и активно формировать его.Мечтаете о путешествиях, новой машине или финансовой подушке безопасности? Наш планировщик бюджета поможет вам воплотить мечты в реальность. Он позволит вам четко видеть, куда уходят ваши деньги, находить возможности для экономии и создавать финансовые планы, которые будут работать на вас. Ставьте цели, отслеживайте прогресс и достигайте финансового благополучия вместе с нашим планировщиком!</p>  
+            <div class="welcome-buttons">  
+                <a href="#" onclick="redirectToCalculator()" class="button">Перейти к калькулятору <i class="fas fa-calculator"></i></a>  
+                <a href="#" onclick="redirectToGoalSetting()" class="button">Поставить цель для накопления <i class="fas fa-bullseye"></i></a>  
+            </div>  
+        </div>  
+        <div class="welcome-image">  
+            <img src="ind.jpeg" alt="Welcome Image">  
+        </div>  
+    </div>  
+    <script>  
+        function redirectToCalculator() {  
+            if (isUserLoggedIn()) {  
+                window.location.href = "calculator.html";  
+            } else {  
+                window.location.href = "auth.html";  
+            }  
+        }  
+
+        function redirectToGoalSetting() {  
+            if (isUserLoggedIn()) {  
+                window.location.href = "goal.html";  
+            } else {  
+                window.location.href = "auth.html";  
+            }  
+        }  
+
+        function isUserLoggedIn() {  
+            // 在这里添加您的登录检查逻辑  
+            // 对于本示例,我们假设如果 localStorage 中存在 "isLoggedIn" 标志,则用户已登录  
+            return localStorage.getItem("isLoggedIn") === "true";  
+        }  
+    </script>  
+    <footer>  
+        <p>&copy; 2023 Наш сервис. Все права защищены.</p>  
+    </footer>  
+</body>  
+</html>

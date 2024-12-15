@@ -1,0 +1,211 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Наш сервис</title>  
+    <link rel="stylesheet" href="styles.css">  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">  
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">  
+</head>  
+<body>  
+    <div class="header-container">  
+        <a href="index.html" class="logo-button">  
+            <img src="logo.jpg" alt="Logo" class="logo">  
+        </a>  
+        <div class="site-title">  
+            <h1>Авторизация</h1>  
+        </div>  
+        <nav>  
+            <a href="index.html">Главная</a>  
+            <a href="calculator.html">Калькулятор</a>  
+            <a href="goal.html">Цель для накопления</a>  
+            <a href="auth.html">Авторизация</a>  
+        </nav>  
+    </div>  
+    <div class="auth-container">   
+        <div class="auth-form">  
+            <form id="loginForm">  
+                <div class="form-group">  
+                    <label for="loginUsername">Имя пользователя</label>  
+                    <input type="text" id="loginUsername" placeholder="Введите имя пользователя" required>  
+                </div>  
+                <div class="form-group">  
+                    <label for="loginPassword">Пароль</label>  
+                    <input type="password" id="loginPassword" placeholder="Введите пароль" required>  
+                </div>  
+                <button type="submit" class="button">Войти</button>  
+            </form>  
+        </div>  
+        <div class="auth-form">  
+            <form id="registerForm">  
+                <div class="form-group">  
+                    <label for="registerUsername">Имя пользователя</label>  
+                    <input type="text" id="registerUsername" placeholder="Введите имя пользователя" required>  
+                </div>  
+                <div class="form-group">  
+                    <label for="registerPassword">Пароль</label>  
+                    <input type="password" id="registerPassword" placeholder="Введите пароль" required>  
+                </div>  
+                <button type="submit" class="button">Зарегистрироваться</button>  
+            </form>  
+        </div>  
+    </div>  
+    <div id="notification" class="notification"></div>
+    <script>  
+        // Получение ссылок на формы и элемент уведомления  
+        const loginForm = document.getElementById('loginForm');  
+        const registerForm = document.getElementById('registerForm');  
+        const notification = document.getElementById('notification');  
+
+        // Обработчик события отправки формы входа  
+        loginForm.addEventListener('submit', (event) => {  
+            event.preventDefault();  
+            const username = document.getElementById('loginUsername').value;  
+            const password = document.getElementById('loginPassword').value;  
+            if (login(username, password)) {  
+                showNotification('Вход выполнен успешно!');  
+                window.location.href = 'index.html';  
+            } else {  
+                showNotification('Неверное имя пользователя или пароль.', true);  
+            }  
+        });  
+
+        // Обработчик события отправки формы регистрации  
+        registerForm.addEventListener('submit', (event) => {  
+            event.preventDefault();  
+            const username = document.getElementById('registerUsername').value;  
+            const password = document.getElementById('registerPassword').value;  
+            if (register(username, password)) {  
+                showNotification('Регистрация прошла успешно!');  
+            } else {  
+                showNotification('Ошибка регистрации. Попробуйте еще раз.', true);  
+            }  
+        });  
+
+        // Функция для отображения уведомления  
+        function showNotification(message, isError = false) {  
+            notification.textContent = message;  
+            notification.classList.add(isError ? 'error' : 'success');  
+            notification.style.display = 'block';  
+            setTimeout(() => {  
+                notification.style.display = 'none';  
+                notification.classList.remove('error', 'success');  
+            }, 3000);  
+        }  
+        function saveUser(username, password) {  
+            const users = JSON.parse(localStorage.getItem('users')) || [];  
+            const existingUser = users.find(user => user.username === username);  
+            if (existingUser) {  
+                showNotification('Пользователь с таким именем уже существует.', true);  
+                return false;  
+            }  
+            users.push({ username, password });  
+            localStorage.setItem('users', JSON.stringify(users));  
+            return true;  
+        }  
+
+        // Функция для проверки пользователя при входе  
+        function getUser(username, password) {  
+            const users = JSON.parse(localStorage.getItem('users')) || [];  
+            const user = users.find(user => user.username === username && user.password === password);  
+            return user || null;  
+        }  
+
+        // Обновленная функция для входа пользователя  
+        function login(username, password) {  
+            const user = getUser(username, password);  
+            if (user) {  
+                localStorage.setItem('isLoggedIn', 'true');  
+                return true;  
+            }  
+            return false;  
+        }  
+
+        // Обновленная функция для регистрации пользователя  
+        function register(username, password) {  
+            if (saveUser(username, password)) {  
+                localStorage.setItem('isLoggedIn', 'true');  
+                return true;  
+            }  
+            return false;  
+        }  
+    </script>  
+    <style>
+        .auth-container {  
+            display: flex;   
+            background: #f1f1f1;  
+            font-family: 'Roboto', sans-serif;  
+            font-size:24px;
+            margin-bottom: 260px;
+        }  
+
+        .auth-form {  
+            background-color: white;  
+            padding: 30px;  
+            border-radius: 10px;  
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);  
+            width: 100%;  
+            max-width: 400px;  
+            margin: 20px;  
+        }  
+
+        .form-group {  
+            margin-bottom: 20px;  
+        }  
+
+        .form-group label {  
+            display: block;  
+            font-weight: bold;  
+            margin-bottom: 5px;  
+        }  
+
+        .form-group input {  
+            width: 100%;  
+            padding: 10px;  
+            border: 1px solid #ccc;  
+            border-radius: 5px;  
+            font-size: 16px;  
+            margin-bottom: 50px;  
+        }  
+
+        .button {  
+            display: block;  
+            width: 100%;  
+            background: linear-gradient(to right, #4CAF50, #398f3c);  
+            color: white;  
+            padding: 10px 20px;  
+            border: none;  
+            border-radius: 5px;  
+            font-size: 16px;  
+            cursor: pointer;  
+        }  
+
+        .button:hover {  
+            background: linear-gradient(to right, #4CAF50, #398f3c);  
+        }  
+
+        .notification {  
+            position: fixed;  
+            bottom: 20px;  
+            left: 50%;  
+            transform: translateX(-50%);  
+            background-color: #4CAF50;  
+            color: white;  
+            padding: 10px 20px;  
+            border-radius: 5px;  
+            display: none;  
+            z-index: 9999;  
+        }  
+
+        .notification.error {  
+            background-color: #398f3c;  
+        }  
+    </style>
+    <footer>  
+        <p>&copy; 2023 Наш сервис. Все права защищены.</p>  
+    </footer>  
+</body>  
+</html>
+</body>  
+</html>  

@@ -1,0 +1,275 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Наш сервис</title>  
+    <link rel="stylesheet" href="styles.css">  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">  
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">  
+</head>  
+    <div class="header-container">  
+        <a href="index.html" class="logo-button">  
+            <img src="logo.jpg" alt="Logo" class="logo">  
+        </a>  
+        <div class="site-title">  
+            <h1>планировщик бюджета </h1>  
+        </div>  
+        <nav>  
+            <a href="index.html">Главная</a>  
+            <a href="calculator.html">Калькулятор</a>  
+            <a href="goal.html">Цель для накопления</a>  
+            <a href="auth.html">Авторизация</a>  
+        </nav>  
+    </div>  
+</head>  
+<style>
+    body {  
+            font-family: 'Roboto', sans-serif;  
+            margin: 0;  
+            padding: 0;  
+            background-color: #f1f1f1; 
+            display: flex;  
+            flex-direction: column;  
+            align-items: center;  
+            justify-content: center;  
+            min-height: 100vh; 
+        }  
+    footer {  
+    background-color: #4CAF50; 
+    color: white; 
+    text-align: center;  
+    padding: 20px 0;  
+    width: 100%;  
+    }  
+    h1 {  
+        margin: 0;  
+        padding: 20px 0; 
+    }  
+
+    .budget-container, .spending-container {  
+        margin-top: 20px;
+        max-width: 400px;   
+        background: white;  
+        padding: 20px;  
+        border-radius: 10px;  
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
+        margin-bottom: 20px;  
+        display: flex;  
+        flex-direction: column; 
+    }  
+
+    .form-group {  
+        margin-bottom: 10px;  
+    }  
+
+    .form-group label {  
+        display: block;  
+        margin-bottom: 5px;  
+    }  
+
+    .form-group input {  
+        width: 100%;  
+        padding: 10px;  
+        border: 1px solid #ccc;  
+        border-radius: 5px;  
+    }  
+
+    button {  
+        margin-top: 10px;  
+        padding: 5px 10px;  
+        border: none;  
+        border-radius: 5px;  
+        background-color: #4CAF50; 
+        color: white;   
+        cursor: pointer;  
+        transition: background-color 0.3s;   
+    }  
+
+    button:hover {  
+        background-color: #398f3c; 
+    }  
+
+    #chartContainer {  
+        max-width: 600px;  
+        margin-top: 20px;  
+    }  
+
+    ul {  
+        padding: 0;  
+        list-style-type: none; 
+    }  
+
+    li {  
+        padding: 5px 0;  
+        border-bottom: 1px solid #ccc;    
+    }  
+
+    li:last-child {  
+        border-bottom: none; 
+    }  
+
+    #budgetSummary {  
+        margin-top: 20px;  
+        font-weight: bold;  
+    }  
+
+    #savingsContainer {  
+        margin-top: 20px;  
+        display: none; 
+    }  
+</style> 
+ <body>
+<div class="budget-container">  
+    <div class="form-group">  
+        <label for="category">Категория:</label>  
+        <input type="text" id="category" placeholder="Введите название категории" required>  
+    </div>  
+    <div class="form-group">  
+        <label for="amount">Сумма:</label>  
+        <input type="number" id="amount" placeholder="Введите сумму" required>  
+    </div>  
+    <button id="addCategoryButton">Добавить категорию</button>  
+
+    <h2>Список категорий:</h2>  
+    <ul id="categoryList"></ul>  
+
+    <button id="createBudgetButton">Создать бюджет</button>  
+    
+    <div id="budgetSummary"></div>  
+</div>  
+
+<div id="chartContainer">  
+    <canvas id="budgetChart" width="400" height="200"></canvas>  
+</div>  
+
+<div class="spending-container" style="display: none;">  
+    <h2>Введение потраченной суммы</h2>  
+    <div id="spendingForm"></div>  
+    <button id="calculateSpendingButton">Подсчитать потратили</button>  
+    <div id="spendingResult"></div>  
+</div>  
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  
+<script>  
+    let categories = [];  
+    let amounts = [];  
+    let totalBudget = 0;  
+
+    document.getElementById('addCategoryButton').onclick = function () {  
+        const category = document.getElementById('category').value;  
+        const amount = parseFloat(document.getElementById('amount').value);  
+        
+        if (category && !isNaN(amount) && amount > 0) {  
+            categories.push(category);  
+            amounts.push(amount);  
+            totalBudget += amount; //累加预算  
+            updateCategoryList();  
+            document.getElementById('category').value = '';  
+            document.getElementById('amount').value = '';  
+        }  
+    };  
+
+    function updateCategoryList() {  
+        const categoryList = document.getElementById('categoryList');  
+        categoryList.innerHTML = '';  
+        
+        categories.forEach((cat, index) => {  
+            const li = document.createElement('li');  
+            li.textContent = `${cat}: ${amounts[index]}`;  
+            categoryList.appendChild(li);  
+        });  
+        
+        document.getElementById('budgetSummary').textContent = `Общий бюджет: ${totalBudget} р.`;  
+        document.querySelector('.spending-container').style.display = 'block'; //Отображение формы расходования  
+        
+        updateSpendingForm(); //Обновить форму расходов  
+    }  
+
+    document.getElementById('createBudgetButton').onclick = function () {  
+        if (categories.length > 0) {  
+            renderChart();  
+        }  
+    };  
+
+    function renderChart() {  
+        const ctx = document.getElementById('budgetChart').getContext('2d');  
+        const budgetChart = new Chart(ctx, {  
+            type: 'pie', // Тип диаграммы  
+            data: {  
+                labels: categories,  
+                datasets: [{  
+                    label: 'Бюджет по категориям',  
+                    data: amounts,  
+                    backgroundColor: [  
+                        '#ff6384',   
+                        '#36a2eb',   
+                        '#ffce56',  
+                        '#4caf50',  
+                        '#ff5722'  
+                    ],  
+                    borderColor: 'white',  
+                    borderWidth: 1  
+                }]  
+            },  
+            options: {  
+                responsive: true,  
+                plugins: {  
+                    legend: {  
+                        display: true,  
+                        position: 'top',  
+                    },  
+                    title: {  
+                        display: true,  
+                        text: 'Распределение бюджета'  
+                    }  
+                }  
+            }  
+        });  
+    }  
+
+    function updateSpendingForm() {  
+        const spendingForm = document.getElementById('spendingForm');  
+        spendingForm.innerHTML = ''; //Очистить форму перед обновлением  
+        
+        categories.forEach((cat, index) => {  
+            const formGroup = document.createElement('div');  
+            formGroup.className = 'form-group';  
+            formGroup.innerHTML = `  
+                <label for="spendAmount_${index}">${cat}:</label>  
+                <input type="number" id="spendAmount_${index}" placeholder="Введите сумму" required>  
+            `;  
+            spendingForm.appendChild(formGroup);  
+        });  
+        
+        const otherGroup = document.createElement('div');  
+        otherGroup.className = 'form-group';  
+        otherGroup.innerHTML = `  
+            <label for="spendAmount_other">Другие расходы:</label>  
+            <input type="number" id="spendAmount_other" placeholder="Введите сумму" required>  
+        `;  
+        spendingForm.appendChild(otherGroup);  
+    }  
+
+    document.getElementById('calculateSpendingButton').onclick = function () {  
+        let totalSpent = 0;  
+
+        categories.forEach((_, index) => {  
+            const spendAmount = parseFloat(document.getElementById(`spendAmount_${index}`).value) || 0;  
+            totalSpent += spendAmount;  
+        });  
+
+        const otherSpent = parseFloat(document.getElementById(`spendAmount_other`).value) || 0;  
+        totalSpent += otherSpent;  
+
+        const balance = totalBudget - totalSpent;  
+        const spendingResult = document.getElementById('spendingResult');  
+        spendingResult.textContent = `Вы потратили: ${totalSpent} р. ${balance >= 0 ? `Вы сэкономили: ${balance} р.` : `Вы превысили бюджет на: ${Math.abs(balance)} р.`}`;  
+    };  
+</script>  
+<footer>  
+    <p>© 2023 Ваш Сайт. Все права защищены.</p>  
+</footer>  
+</body>  
+</html>  
